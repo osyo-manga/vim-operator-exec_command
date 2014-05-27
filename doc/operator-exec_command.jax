@@ -1,0 +1,48 @@
+*operator-exec_command.txt*	コマンドを実行する operator
+
+
+==============================================================================
+概要						*operator-exec_command-introduction*
+
+任意のコマンドを実行するための operator です。
+
+==============================================================================
+インターフェース				*operator-exec_command-example*
+
+>
+	" :help {motion} する
+	nmap <expr> <Space>* operator#exec_command#mapexpr(":help %s")
+
+	" {motion} の範囲を任意の1文字で置き換える
+	" operator の入力後に置き換える位置文字を入力する
+	nmap <expr> <A-r>
+	\	operator#exec_command#mapexpr(":normal! `[v`]lr" . nr2char(getchar()))
+
+	" {motion} の範囲を任意の1文字で置き換える
+	" {motion} の入力後に置き換える位置文字を入力する
+	nmap <expr> <A-r>
+	\	operator#exec_command#mapexpr('execute ":normal! `[%v`]lr" . nr2char(getchar())')
+<
+
+
+==============================================================================
+インターフェース				*operator-exec_command-interface*
+
+------------------------------------------------------------------------------
+関数						*operator-exec_command-functions*
+
+operator#exec_command#mapexpr({format})		*operator#exec_command#mapexpr()*
+	{format} の文字列を |:execute| します。
+	{format} には以下の変換指示子が使用できます
+	"%s" : 入力した {motion} の範囲のテキスト文字列
+	"%v" : {motion} のビジュアルモード('v' や 'V' など)
+Example: >
+	" :help {motion} する
+	nmap <expr> <Space>* operator#exec_command#mapexpr(":help %s")
+<
+
+	NOTE: "%%" した場合に "%" に置き換わるわけではないので注意してください
+
+
+==============================================================================
+vim:tw=78:fo=tcq2mM:ts=8:ft=help:norl

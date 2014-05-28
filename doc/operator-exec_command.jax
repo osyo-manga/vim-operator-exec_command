@@ -15,7 +15,7 @@
 
 >
 	" :help {motion} する
-	nmap <expr> <Space>* operator#exec_command#mapexpr(":help %s")
+	nmap <expr> <Space>* operator#exec_command#mapexpr(":help %t")
 
 	" {motion} の範囲を任意の1文字で置き換える
 	" operator の入力後に置き換える位置文字を入力する
@@ -38,11 +38,11 @@
 operator#exec_command#mapexpr({format})		*operator#exec_command#mapexpr()*
 	{format} の文字列を |:execute| します。
 	{format} には以下の変換指示子が使用できます
-	"%s" : 入力した {motion} の範囲のテキスト文字列
+	"%t" : 入力した {motion} の範囲のテキスト文字列
 	"%v" : {motion} のビジュアルモード('v' や 'V' など)
 Example: >
 	" :help {motion} する
-	nmap <expr> <Space>* operator#exec_command#mapexpr(":help %s")
+	nmap <expr> <Space>* operator#exec_command#mapexpr(":help %t")
 <
 
 	NOTE: "%%" した場合に "%" に置き換わるわけではないので注意してください

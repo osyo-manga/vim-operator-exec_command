@@ -7,7 +7,7 @@ let s:C = vital#of("operator_exec_command").import("Coaster.Buffer")
 function! s:exec(format, input, wise)
 " 	let exec = a:format
 " 	silent! let exec = printf(a:format, a:input)
-	let exec = substitute(substitute(a:format, "%s", a:input, "g"), "%v", a:wise, "g")
+	let exec = substitute(substitute(a:format, "%t", a:input, "g"), "%v", a:wise, "g")
 	execute exec
 endfunction
 

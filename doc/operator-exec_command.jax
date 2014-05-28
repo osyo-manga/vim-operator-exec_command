@@ -6,6 +6,10 @@
 
 任意のコマンドを実行するための operator です。
 
+- Requires
+  operator-user - https://github.com/kana/vim-operator-user
+
+
 ==============================================================================
 インターフェース				*operator-exec_command-example*
 

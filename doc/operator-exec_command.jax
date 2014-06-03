@@ -47,6 +47,17 @@ Example: >
 
 	NOTE: "%%" した場合に "%" に置き換わるわけではないので注意してください
 
+					*operator#exec_command#mapexpr_v_keymapping()*
+operator#exec_command#mapexpr_v_keymapping({key}[, {noremap}])
+	{motion} の範囲のビジュアルモードに対して {key} を適用させます。
+	これは
+>
+	operator#exec_command#mapexpr(":normal! `[%v`]{key}")
+<
+	とするのと同等です。
+	また、{noremap} に 1 が設定されていれば {key} のマップは展開されませ
+	ん。0 が設定されていればキーのマップが展開されます。
+	{noremap} がない場合は 0 になります。
 
 ==============================================================================
 vim:tw=78:fo=tcq2mM:ts=8:ft=help:norl

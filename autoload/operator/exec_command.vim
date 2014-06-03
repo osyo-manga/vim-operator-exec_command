@@ -30,5 +30,16 @@ function! operator#exec_command#mapexpr(format)
 endfunction
 
 
+function! operator#exec_command#mapexpr_v_keymapping(key, ...)
+	let noremap = get(a:, 1, 0)
+	if noremap
+		let format = poereprintf("normal! `[%v`]%s", a:key)
+	else
+		let format = printf("normal `[%v`]%s", a:key)
+	endif
+	return operator#exec_command#mapexpr(format)
+endfunction
+
+
 let &cpo = s:save_cpo
 unlet s:save_cpo

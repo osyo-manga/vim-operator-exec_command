@@ -13,7 +13,6 @@ function! s:exec(formats, input, wise)
 	try
 		for format in a:formats
 			let exec = substitute(substitute(format, "%t", a:input, "g"), "%v", a:wise, "g")
-			echom exec
 			execute exec
 		endfor
 	finally

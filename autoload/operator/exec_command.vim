@@ -5,6 +5,7 @@ set cpo&vim
 let s:V = vital#of("operator_exec_command")
 let s:C = s:V.import("Coaster.Buffer")
 let s:U = s:V.import("Unlocker.Rocker")
+let s:Prelude = s:V.import("Prelude")
 
 function! s:exec(formats, input, wise)
 	let locker = s:U.lock("&selection")
@@ -12,6 +13,7 @@ function! s:exec(formats, input, wise)
 	try
 		for format in a:formats
 			let exec = substitute(substitute(format, "%t", a:input, "g"), "%v", a:wise, "g")
+			echom exec
 			execute exec
 		endfor
 	finally
@@ -32,7 +34,7 @@ function! operator#exec_command#do(wise)
 		unlet s:exec_formats
 	endif
 endfunction
-all operator#user#define('exec_command-do', 'operator#exec_command#do')
+call operator#user#define('exec_command-do', 'operator#exec_command#do')
 
 
 function! operator#exec_command#mapexpr(format, ...)
@@ -56,6 +58,17 @@ function! operator#exec_command#mapexpr_v_keymapping(key, ...)
 	return operator#exec_command#mapexpr(format)
 endfunction
 
+
+function! s:set_search_regeister(text)
+	let @/ = s:Prelude.escape_pattern(a:text)
+endfunction
+
+
+function! operator#exec_command#mapexpr_gn(key, ...)
+	let noremap = get(a:, 1, 0)
+	let config = get(a:, 2, {})
+	return operator#exec_command#mapexpr(["call s:set_search_regeister('%t')", printf('call feedkeys(''%sgn'', ''%s'')', a:key, noremap ? "n" : "m")], { "stay_cursor" : 1})
+endfunction
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

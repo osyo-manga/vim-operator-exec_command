@@ -20,12 +20,12 @@
 	" {motion} の範囲を任意の1文字で置き換える
 	" operator の入力後に置き換える位置文字を入力する
 	nmap <expr> <A-r>
-	\	operator#exec_command#mapexpr(":normal! `[v`]lr" . nr2char(getchar()))
+	\	operator#exec_command#mapexpr(":normal! `[v`]r" . nr2char(getchar()))
 
 	" {motion} の範囲を任意の1文字で置き換える
 	" {motion} の入力後に置き換える位置文字を入力する
 	nmap <expr> <A-r>
-	\	operator#exec_command#mapexpr('execute ":normal! `[%v`]lr" . nr2char(getchar())')
+	\	operator#exec_command#mapexpr('execute ":normal! `[%v`]r" . nr2char(getchar())')
 <
 
 

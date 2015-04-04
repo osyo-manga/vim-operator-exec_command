@@ -2,13 +2,21 @@ scriptencoding utf-8
 let s:save_cpo = &cpo
 set cpo&vim
 
-let s:C = vital#of("operator_exec_command").import("Coaster.Buffer")
+let s:V = vital#of("operator_exec_command")
+let s:C = s:V.import("Coaster.Buffer")
+let s:U = s:V.import("Unlocker.Rocker")
 
 function! s:exec(format, input, wise)
 " 	let exec = a:format
 " 	silent! let exec = printf(a:format, a:input)
 	let exec = substitute(substitute(a:format, "%t", a:input, "g"), "%v", a:wise, "g")
-	execute exec
+	let locker = s:U.lock("&selection")
+	set selection=inclusive
+	try
+		execute exec
+	finally
+		call locker.unlock()
+	endtry
 endfunction
 
 
@@ -20,8 +28,7 @@ function! operator#exec_command#do(wise)
 		unlet s:exec_format
 	endif
 endfunction
-
-call operator#user#define('exec_command-do', 'operator#exec_command#do')
+:call operator#user#define('exec_command-do', 'operator#exec_command#do')
 
 
 function! operator#exec_command#mapexpr(format)
@@ -33,7 +40,7 @@ endfunction
 function! operator#exec_command#mapexpr_v_keymapping(key, ...)
 	let noremap = get(a:, 1, 0)
 	if noremap
-		let format = poereprintf("normal! `[%v`]%s", a:key)
+		let format = printf("normal! `[%v`]%s", a:key)
 	else
 		let format = printf("normal `[%v`]%s", a:key)
 	endif

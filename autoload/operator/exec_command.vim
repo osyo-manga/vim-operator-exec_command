@@ -6,39 +6,48 @@ let s:V = vital#of("operator_exec_command")
 let s:C = s:V.import("Coaster.Buffer")
 let s:U = s:V.import("Unlocker.Rocker")
 
-function! s:exec(format, input, wise)
-" 	let exec = a:format
-" 	silent! let exec = printf(a:format, a:input)
-	let exec = substitute(substitute(a:format, "%t", a:input, "g"), "%v", a:wise, "g")
+function! s:exec(formats, input, wise)
 	let locker = s:U.lock("&selection")
 	set selection=inclusive
 	try
-		execute exec
+		for format in a:formats
+			let exec = substitute(substitute(format, "%t", a:input, "g"), "%v", a:wise, "g")
+			execute exec
+		endfor
 	finally
 		call locker.unlock()
 	endtry
+	if exists("s:cursor")
+		call setpos(".", s:cursor)
+		unlet s:cursor
+	endif
 endfunction
 
 
 function! operator#exec_command#do(wise)
 	let wise = s:C.as_wise_key(a:wise)
 	let text = s:C.get_text_from_latest_yank(wise)
-	if exists("s:exec_format")
-		call s:exec(s:exec_format, text, wise)
-		unlet s:exec_format
+	if exists("s:exec_formats")
+		call s:exec(s:exec_formats, text, wise)
+		unlet s:exec_formats
 	endif
 endfunction
-:call operator#user#define('exec_command-do', 'operator#exec_command#do')
+all operator#user#define('exec_command-do', 'operator#exec_command#do')
 
 
-function! operator#exec_command#mapexpr(format)
-	let s:exec_format = a:format
+function! operator#exec_command#mapexpr(format, ...)
+	let s:exec_formats = type(a:format) == type([]) ? a:format : [a:format]
+	let config = get(a:, 1, {})
+	if get(config, "stay_cursor", 0)
+		let s:cursor = getpos(".")
+	endif
 	return "\<Plug>(operator-exec_command-do)"
 endfunction
 
 
 function! operator#exec_command#mapexpr_v_keymapping(key, ...)
 	let noremap = get(a:, 1, 0)
+	let config = get(a:, 2, {})
 	if noremap
 		let format = printf("normal! `[%v`]%s", a:key)
 	else

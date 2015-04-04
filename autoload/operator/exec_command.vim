@@ -60,7 +60,7 @@ endfunction
 
 
 function! s:set_search_regeister(text)
-	let @/ = s:Prelude.escape_pattern(a:text)
+	let @/ = '\<' . s:Prelude.escape_pattern(a:text) . '\>'
 endfunction
 
 

@@ -47,17 +47,31 @@ Example: >
 
 	NOTE: "%%" した場合に "%" に置き換わるわけではないので注意してください
 
-					*operator#exec_command#mapexpr_v_keymapping()*
-operator#exec_command#mapexpr_v_keymapping({key}[, {noremap}])
-	{motion} の範囲のビジュアルモードに対して {key} を適用させます。
+				*operator#exec_command#mapexpr_v_keymapping()*
+operator#exec_command#mapexpr_v_keymapping({operator}[, {noremap}])
+	{motion} の範囲のビジュアルモードに対して {operator} を適用させます。
 	これは
 >
-	operator#exec_command#mapexpr(":normal! `[%v`]{key}")
+	operator#exec_command#mapexpr(":normal! `[%v`]{operator}")
 <
 	とするのと同等です。
-	また、{noremap} に 1 が設定されていれば {key} のマップは展開されませ
-	ん。0 が設定されていればキーのマップが展開されます。
+	また、{noremap} に 1 が設定されていれば {operator} のマップは展開さ
+	れません。0 が設定されていればキーのマップが展開されます。
 	{noremap} がない場合は 0 になります。
+
+					*operator#exec_command#mapexpr_gn()*
+operator#exec_command#mapexpr_gn({operator}[, {noremap}])
+	{motion} のテキストを検索レジスタ(|@/|) に保存したあとに {operator}gn
+	を実行する operator のキーマッピングを返します。
+	また、{noremap} に 1 が設定されていれば {operator} のマップは展開さ
+	れません。0 が設定されていればキーのマップが展開されます。
+	{noremap} がない場合は 0 になります。
+	これは {operator} を dot repeat したい場合に利用する事ができます。
+>
+	" operator c を連続して適用させる
+	nmap <expr> C operator#exec_command#mapexpr_gn("c", 1)
+<
+
 
 ==============================================================================
 vim:tw=78:fo=tcq2mM:ts=8:ft=help:norl

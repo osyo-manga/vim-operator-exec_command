@@ -64,14 +64,21 @@ endfunction
 
 
 function! s:set_search_regeister(text)
-	let @/ = '\<' . s:Prelude.escape_pattern(a:text) . '\>'
+	if s:config.is_word
+		let @/ = '\<' . s:Prelude.escape_pattern(a:text) . '\>'
+	else
+		let @/ = s:Prelude.escape_pattern(a:text)
+	endif
 endfunction
 
 
 function! operator#exec_command#mapexpr_gn(key, ...)
 	let noremap = get(a:, 1, 0)
-	let config = get(a:, 2, {})
-	return operator#exec_command#mapexpr(["call s:set_search_regeister('%t')", printf('call feedkeys(''%sgn'', ''%s'')', a:key, noremap ? "n" : "m")], a:config)
+	let config = extend({
+\		"is_word" : 1
+\	}, get(a:, 2, {}))
+	let s:config = config
+	return operator#exec_command#mapexpr(["call s:set_search_regeister('%t')", printf('call feedkeys(''%sgn'', ''%s'')', a:key, noremap ? "n" : "m")], config)
 endfunction
 
 let &cpo = s:save_cpo

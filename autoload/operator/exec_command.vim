@@ -26,8 +26,13 @@ endfunction
 
 
 function! operator#exec_command#do(wise)
+	Debug homu
+	Debug a:wise
+	let s = s:exec_formats
+	Debug s
 	let wise = s:C.as_wise_key(a:wise)
 	let text = s:C.get_text_from_latest_yank(wise)
+	Debug text
 	if exists("s:exec_formats")
 		call s:exec(s:exec_formats, text, wise)
 		unlet s:exec_formats
@@ -66,7 +71,7 @@ endfunction
 function! operator#exec_command#mapexpr_gn(key, ...)
 	let noremap = get(a:, 1, 0)
 	let config = get(a:, 2, {})
-	return operator#exec_command#mapexpr(["call s:set_search_regeister('%t')", printf('call feedkeys(''%sgn'', ''%s'')', a:key, noremap ? "n" : "m")], { "stay_cursor" : 1})
+	return operator#exec_command#mapexpr(["call s:set_search_regeister('%t')", printf('call feedkeys(''%sgn'', ''%s'')', a:key, noremap ? "n" : "m")], a:config)
 endfunction
 
 let &cpo = s:save_cpo

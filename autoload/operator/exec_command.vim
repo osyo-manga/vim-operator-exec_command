@@ -64,18 +64,15 @@ endfunction
 
 
 function! s:set_search_regeister(text)
-	if s:config.is_word
-		let @/ = '\<' . s:Prelude.escape_pattern(a:text) . '\>'
-	else
-		let @/ = s:Prelude.escape_pattern(a:text)
-	endif
+	let format = s:config.search_register_format
+	let @/ = substitute(format, "%t", s:Prelude.escape_pattern(a:text), "g")
 endfunction
 
 
 function! operator#exec_command#mapexpr_gn(key, ...)
 	let noremap = get(a:, 1, 0)
 	let config = extend({
-\		"is_word" : 1
+\		"search_register_format" : '\<%t\>'
 \	}, get(a:, 2, {}))
 	let s:config = config
 	return operator#exec_command#mapexpr(["call s:set_search_regeister('%t')", printf('call feedkeys(''%sgn'', ''%s'')', a:key, noremap ? "n" : "m")], config)

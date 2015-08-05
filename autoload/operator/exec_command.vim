@@ -26,13 +26,9 @@ endfunction
 
 
 function! operator#exec_command#do(wise)
-	Debug homu
-	Debug a:wise
 	let s = s:exec_formats
-	Debug s
 	let wise = s:C.as_wise_key(a:wise)
 	let text = s:C.get_text_from_latest_yank(wise)
-	Debug text
 	if exists("s:exec_formats")
 		call s:exec(s:exec_formats, text, wise)
 		unlet s:exec_formats

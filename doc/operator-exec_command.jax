@@ -11,7 +11,7 @@
 
 
 ==============================================================================
-インターフェース				*operator-exec_command-example*
+設定例						*operator-exec_command-example*
 
 >
 	" :help {motion} する

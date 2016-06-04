@@ -2,10 +2,11 @@ scriptencoding utf-8
 let s:save_cpo = &cpo
 set cpo&vim
 
-let s:V = vital#of("operator_exec_command")
+" let s:V = vital#of("operator_exec_command")
+let s:V = vital#operator_exec_command#of()
 let s:C = s:V.import("Coaster.Buffer")
 let s:U = s:V.import("Unlocker.Rocker")
-let s:Prelude = s:V.import("Prelude")
+let s:Prelude = s:V.import("Data.String")
 
 function! s:exec(formats, input, wise)
 	let locker = s:U.lock("&selection")
@@ -31,7 +32,7 @@ function! operator#exec_command#do(wise)
 	let text = s:C.get_text_from_latest_yank(wise)
 	if exists("s:exec_formats")
 		call s:exec(s:exec_formats, text, wise)
-		unlet s:exec_formats
+" 		unlet s:exec_formats
 	endif
 endfunction
 call operator#user#define('exec_command-do', 'operator#exec_command#do')

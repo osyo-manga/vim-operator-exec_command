@@ -1,7 +1,8 @@
 operator_exec_command
-e3250cf
+49faf10e4d39eaa0dee1643acab5fc846bede610
 
 Coaster.Buffer
 Unlocker.Rocker
 Unlocker.Rocker.Multi
 Prelude
+Data.String
